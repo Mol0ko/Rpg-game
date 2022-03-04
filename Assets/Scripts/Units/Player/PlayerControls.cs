@@ -37,6 +37,24 @@ namespace RpgGame.Units.Player
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""SwordAttack"",
+                    ""type"": ""Button"",
+                    ""id"": ""00ed8690-3ab4-4394-9f54-d97887d3fc2a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ShieldAttack"",
+                    ""type"": ""Button"",
+                    ""id"": ""645d39cb-ed29-4b8e-b628-541541ba7e1c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -94,6 +112,28 @@ namespace RpgGame.Units.Player
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4b59c838-ca6f-4d32-b6cd-3a375fde99dc"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SwordAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ada28570-3cce-4e9b-8860-744bfec82c4c"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ShieldAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -103,6 +143,8 @@ namespace RpgGame.Units.Player
             // Unit
             m_Unit = asset.FindActionMap("Unit", throwIfNotFound: true);
             m_Unit_Move = m_Unit.FindAction("Move", throwIfNotFound: true);
+            m_Unit_SwordAttack = m_Unit.FindAction("SwordAttack", throwIfNotFound: true);
+            m_Unit_ShieldAttack = m_Unit.FindAction("ShieldAttack", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -163,11 +205,15 @@ namespace RpgGame.Units.Player
         private readonly InputActionMap m_Unit;
         private IUnitActions m_UnitActionsCallbackInterface;
         private readonly InputAction m_Unit_Move;
+        private readonly InputAction m_Unit_SwordAttack;
+        private readonly InputAction m_Unit_ShieldAttack;
         public struct UnitActions
         {
             private @PlayerControls m_Wrapper;
             public UnitActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
             public InputAction @Move => m_Wrapper.m_Unit_Move;
+            public InputAction @SwordAttack => m_Wrapper.m_Unit_SwordAttack;
+            public InputAction @ShieldAttack => m_Wrapper.m_Unit_ShieldAttack;
             public InputActionMap Get() { return m_Wrapper.m_Unit; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -180,6 +226,12 @@ namespace RpgGame.Units.Player
                     @Move.started -= m_Wrapper.m_UnitActionsCallbackInterface.OnMove;
                     @Move.performed -= m_Wrapper.m_UnitActionsCallbackInterface.OnMove;
                     @Move.canceled -= m_Wrapper.m_UnitActionsCallbackInterface.OnMove;
+                    @SwordAttack.started -= m_Wrapper.m_UnitActionsCallbackInterface.OnSwordAttack;
+                    @SwordAttack.performed -= m_Wrapper.m_UnitActionsCallbackInterface.OnSwordAttack;
+                    @SwordAttack.canceled -= m_Wrapper.m_UnitActionsCallbackInterface.OnSwordAttack;
+                    @ShieldAttack.started -= m_Wrapper.m_UnitActionsCallbackInterface.OnShieldAttack;
+                    @ShieldAttack.performed -= m_Wrapper.m_UnitActionsCallbackInterface.OnShieldAttack;
+                    @ShieldAttack.canceled -= m_Wrapper.m_UnitActionsCallbackInterface.OnShieldAttack;
                 }
                 m_Wrapper.m_UnitActionsCallbackInterface = instance;
                 if (instance != null)
@@ -187,6 +239,12 @@ namespace RpgGame.Units.Player
                     @Move.started += instance.OnMove;
                     @Move.performed += instance.OnMove;
                     @Move.canceled += instance.OnMove;
+                    @SwordAttack.started += instance.OnSwordAttack;
+                    @SwordAttack.performed += instance.OnSwordAttack;
+                    @SwordAttack.canceled += instance.OnSwordAttack;
+                    @ShieldAttack.started += instance.OnShieldAttack;
+                    @ShieldAttack.performed += instance.OnShieldAttack;
+                    @ShieldAttack.canceled += instance.OnShieldAttack;
                 }
             }
         }
@@ -194,6 +252,8 @@ namespace RpgGame.Units.Player
         public interface IUnitActions
         {
             void OnMove(InputAction.CallbackContext context);
+            void OnSwordAttack(InputAction.CallbackContext context);
+            void OnShieldAttack(InputAction.CallbackContext context);
         }
     }
 }

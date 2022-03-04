@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace RpgGame.Units
 {
@@ -10,16 +8,29 @@ namespace RpgGame.Units
         private UnitInputComponent _input;
         private UnitStatsComponent _stats;
 
-        // Start is called before the first frame update
+        private bool _playingAttackAnimation = false;
+
+        #region Lifecycle
+
         void Start()
         {
             _animator = GetComponentInChildren<Animator>();
             _input = GetComponent<UnitInputComponent>();
             _stats = GetComponent<UnitStatsComponent>();
+
+            if (_input != null)
+                _input.OnAttackHandler += OnSwordAttack;
         }
 
-        // Update is called once per frame
         void Update()
+        {
+            if (!_playingAttackAnimation)
+                OnMove();
+        }
+
+        #endregion
+
+        private void OnMove()
         {
             ref var movement = ref _input.MoveDirection;
             _animator.SetFloat("ForwardMove", movement.z);
@@ -28,6 +39,19 @@ namespace RpgGame.Units
             _animator.SetBool("Moving", moving);
             if (moving)
                 transform.position += movement * _stats.MoveSpeed * Time.deltaTime;
+        }
+
+        private void OnSwordAttack()
+        {
+            if (!_playingAttackAnimation) {
+                _animator.SetTrigger("SwordAttack");
+                _playingAttackAnimation = true;
+            }
+        }
+
+        public void OnSwordAttackAnimationEnd(AnimationEvent Data)
+        {
+            _playingAttackAnimation = false;
         }
     }
 }

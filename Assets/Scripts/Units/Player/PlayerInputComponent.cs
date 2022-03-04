@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace RpgGame.Units.Player
 {
@@ -6,8 +8,11 @@ namespace RpgGame.Units.Player
     {
         private PlayerControls _controls;
 
+        #region Lifecycle
+
         private void Awake() {
             _controls = new PlayerControls();
+            _controls.Unit.SwordAttack.performed += OnSwordAttack;
         }
 
         void Update()
@@ -26,6 +31,13 @@ namespace RpgGame.Units.Player
         }
         private void OnDestroy() {
             _controls.Dispose();
+        }
+
+        #endregion
+
+        private void OnSwordAttack(InputAction.CallbackContext obj)
+        {
+            CallOnAttackEvent();
         }
     }
 }
