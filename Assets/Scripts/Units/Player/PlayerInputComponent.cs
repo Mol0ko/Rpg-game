@@ -19,7 +19,6 @@ namespace RpgGame.Units.Player
         {
             var direction = _controls.Unit.Move.ReadValue<Vector2>();
             Movement = new Vector3(direction.x, 0f, direction.y);
-            Debug.Log(Movement);
         }
 
         private void OnEnable() {

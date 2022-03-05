@@ -92,7 +92,7 @@
                 {
                     "name": "",
                     "id": "4b59c838-ca6f-4d32-b6cd-3a375fde99dc",
-                    "path": "<Keyboard>/e",
+                    "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -108,6 +108,34 @@
                     "processors": "",
                     "groups": "",
                     "action": "ShieldAttack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Camera",
+            "id": "fc3677e7-9328-405f-a7a2-15fe2a7b0c78",
+            "actions": [
+                {
+                    "name": "Delta",
+                    "type": "Value",
+                    "id": "14f83db9-cf0b-458c-86e2-fb5247fe080d",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "a6411023-a267-44bc-ac43-1bbe239a5dd7",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Delta",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
