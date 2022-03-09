@@ -6,5 +6,6 @@ namespace RpgGame.Units
     {
         [Range(0.1f, 10f)]
         public float MoveSpeed = 3f;
+        public Side Side;
     }
 }

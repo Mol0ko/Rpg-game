@@ -13,6 +13,7 @@ namespace RpgGame.Units.Player
         private void Awake() {
             _controls = new PlayerControls();
             _controls.Unit.SwordAttack.performed += OnSwordAttack;
+            _controls.Unit.LockTarget.performed += OnTargetLock;
         }
 
         void Update()
@@ -29,6 +30,8 @@ namespace RpgGame.Units.Player
             _controls.Unit.Disable();
         }
         private void OnDestroy() {
+            _controls.Unit.SwordAttack.performed -= OnSwordAttack;
+            _controls.Unit.LockTarget.performed -= OnTargetLock;
             _controls.Dispose();
         }
 
@@ -37,6 +40,11 @@ namespace RpgGame.Units.Player
         private void OnSwordAttack(InputAction.CallbackContext obj)
         {
             CallOnAttackEvent();
+        }
+
+        private void OnTargetLock(InputAction.CallbackContext obj)
+        {
+            CallOnTargetEvent();
         }
     }
 }

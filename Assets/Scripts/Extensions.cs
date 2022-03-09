@@ -1,0 +1,3 @@
+namespace RpgGame.Extensions
+{
+}

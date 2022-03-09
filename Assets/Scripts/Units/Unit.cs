@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace RpgGame.Units
 {
@@ -7,8 +8,14 @@ namespace RpgGame.Units
         private Animator _animator;
         private UnitInputComponent _input;
         private UnitStatsComponent _stats;
-
         private bool _playingAttackAnimation = false;
+
+        [SerializeField]
+        private Transform _targetPoint;
+
+        public Unit Target { get; protected set; }
+        public Transform GetTargetPoint => _targetPoint;
+        public Action OnTargetLostHandler;
 
         #region Lifecycle
 
@@ -19,10 +26,13 @@ namespace RpgGame.Units
             _stats = GetComponent<UnitStatsComponent>();
 
             if (_input != null)
+            {
                 _input.OnAttackHandler += OnSwordAttack;
+                _input.OnTargetEvent += OnTargetUpdate;
+            }
         }
 
-        void Update()
+        protected virtual void Update()
         {
             if (!_playingAttackAnimation)
                 OnMove();
@@ -43,9 +53,46 @@ namespace RpgGame.Units
 
         private void OnSwordAttack()
         {
-            if (!_playingAttackAnimation) {
+            if (!_playingAttackAnimation)
+            {
                 _animator.SetTrigger("SwordAttack");
                 _playingAttackAnimation = true;
+            }
+        }
+
+        private void OnTargetUpdate()
+        {
+            if (Target != null)
+            {
+                Target = null;
+                // TODO: temp solution
+                OnTargetLostHandler?.Invoke();
+            }
+            else
+            {
+                var distanceToTarget = float.MaxValue;
+                UnitStatsComponent target = null;
+                // TODO: fix FindObjectsOfType
+                var units = FindObjectsOfType<UnitStatsComponent>();
+                foreach (var unit in units)
+                {
+                    if (unit.Side != _stats.Side)
+                    {
+                        var currentDistance = (unit.transform.position - transform.position).sqrMagnitude;
+                        if (currentDistance < distanceToTarget)
+                        {
+                            distanceToTarget = currentDistance;
+                            target = unit;
+                        }
+                    }
+                }
+
+                if (target != null)
+                    Target = target.GetComponent<Unit>();
+                else // TODO: handle null target
+                    Debug.LogError("[Unit] No units found to set target");
+
+                Debug.Log("[Unit] target: " + Target?.GetHashCode());
             }
         }
 
