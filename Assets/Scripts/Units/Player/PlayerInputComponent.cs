@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace RpgGame.Units.Player
@@ -13,6 +12,7 @@ namespace RpgGame.Units.Player
         private void Awake() {
             _controls = new PlayerControls();
             _controls.Unit.SwordAttack.performed += OnSwordAttack;
+            _controls.Unit.ShieldAttack.performed += OnShieldAttack;
             _controls.Unit.LockTarget.performed += OnTargetLock;
         }
 
@@ -31,20 +31,20 @@ namespace RpgGame.Units.Player
         }
         private void OnDestroy() {
             _controls.Unit.SwordAttack.performed -= OnSwordAttack;
+            _controls.Unit.ShieldAttack.performed -= OnShieldAttack;
             _controls.Unit.LockTarget.performed -= OnTargetLock;
             _controls.Dispose();
         }
 
         #endregion
 
-        private void OnSwordAttack(InputAction.CallbackContext obj)
-        {
-            CallOnAttackEvent();
-        }
+        private void OnSwordAttack(InputAction.CallbackContext obj) =>
+            CallOnAttackEvent(Weapon.Sword);
 
-        private void OnTargetLock(InputAction.CallbackContext obj)
-        {
+        private void OnShieldAttack(InputAction.CallbackContext obj) =>
+            CallOnAttackEvent(Weapon.Shield);
+
+        private void OnTargetLock(InputAction.CallbackContext obj) => 
             CallOnTargetEvent();
-        }
     }
 }

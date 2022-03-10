@@ -136,7 +136,7 @@ namespace RpgGame.Units.Player
                 {
                     ""name"": """",
                     ""id"": ""ada28570-3cce-4e9b-8860-744bfec82c4c"",
-                    ""path"": """",
+                    ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",

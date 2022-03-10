@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using UnityEngine;
 
 namespace RpgGame.Units
@@ -12,6 +13,8 @@ namespace RpgGame.Units
 
         [SerializeField]
         private Transform _targetPoint;
+        [SerializeField]
+        private ColliderTriggerComponent[] _colliderTriggers;
 
         public Unit Target { get; protected set; }
         public Transform GetTargetPoint => _targetPoint;
@@ -24,10 +27,11 @@ namespace RpgGame.Units
             _animator = GetComponentInChildren<Animator>();
             _input = GetComponent<UnitInputComponent>();
             _stats = GetComponent<UnitStatsComponent>();
+            _colliderTriggers = GetComponentsInChildren<ColliderTriggerComponent>();
 
             if (_input != null)
             {
-                _input.OnAttackHandler += OnSwordAttack;
+                _input.OnAttackHandler += OnAttack;
                 _input.OnTargetEvent += OnTargetUpdate;
             }
         }
@@ -51,11 +55,12 @@ namespace RpgGame.Units
                 transform.position += movement * _stats.MoveSpeed * Time.deltaTime;
         }
 
-        private void OnSwordAttack()
+        private void OnAttack(Weapon weapon)
         {
             if (!_playingAttackAnimation)
             {
-                _animator.SetTrigger("SwordAttack");
+                var animationName = weapon.ToString() + "Attack";
+                _animator.SetTrigger(animationName);
                 _playingAttackAnimation = true;
             }
         }
@@ -96,9 +101,23 @@ namespace RpgGame.Units
             }
         }
 
-        public void OnSwordAttackAnimationEnd(AnimationEvent Data)
+        public void OnAttackAnimationEnd(AnimationEvent data)
         {
             _playingAttackAnimation = false;
+        }
+
+        public void OnColliderControlEvent(AnimationEvent data)
+        {
+            var trigger = _colliderTriggers
+                .FirstOrDefault(c => c.GetId == data.intParameter);
+#if UNITY_EDITOR
+            if (trigger == null)
+            {
+                Debug.LogError($"Коллайдер не найден: {data.intParameter}");
+                UnityEditor.EditorApplication.isPaused = true;
+            }
+#endif
+            trigger.Enabled = data.floatParameter == 1;
         }
     }
 }
