@@ -42,6 +42,15 @@ namespace RpgGame.Units
                 OnMove();
         }
 
+        private void OnDestroy()
+        {
+            if (_input != null)
+            {
+                _input.OnAttackHandler -= OnAttack;
+                _input.OnTargetEvent -= OnTargetUpdate;
+            }
+        }
+
         #endregion
 
         private void OnMove()

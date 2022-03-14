@@ -37,7 +37,7 @@ namespace RpgGame.Units
             var unit = other.GetComponent<UnitStatsComponent>();
             if (unit != null)
             {
-                unit.Health -= 5f;
+                unit.CurrentHealth -= 5f;
                 Debug.Log("Damage to: " + other.name);
                 if (_id == 112)
                 {
@@ -49,7 +49,7 @@ namespace RpgGame.Units
                         body.AddForce(-other.transform.forward * 1000f, ForceMode.Impulse);
                     }
                 }
-                if (unit.Health <= 0f)
+                if (unit.CurrentHealth <= 0f)
                     Destroy(unit.gameObject);
             }
         }
