@@ -33,6 +33,8 @@ namespace RpgGame.Units.Player
         [SerializeField, Range(0.5f, 10f)]
         private float _lockCameraSpeed = 1.5f;
 
+        public Transform PivotTransform { get => _pivot; }
+
         #region Lifecycle
 
         private void Awake()

@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Linq;
+using RpgGame.Extensions;
 using UnityEngine;
 
 namespace RpgGame.Units
 {
-    public class Unit : MonoBehaviour
+    public abstract class Unit : MonoBehaviour
     {
         private Animator _animator;
         private UnitInputComponent _input;
@@ -13,7 +14,6 @@ namespace RpgGame.Units
 
         [SerializeField]
         private Transform _targetPoint;
-        [SerializeField]
         private ColliderTriggerComponent[] _colliderTriggers;
 
         public Unit Target { get; protected set; }
@@ -22,12 +22,12 @@ namespace RpgGame.Units
 
         #region Lifecycle
 
-        void Start()
+        protected virtual void Start()
         {
-            _animator = GetComponentInChildren<Animator>();
-            _input = GetComponent<UnitInputComponent>();
-            _stats = GetComponent<UnitStatsComponent>();
-            _colliderTriggers = GetComponentsInChildren<ColliderTriggerComponent>();
+            _animator = this.FindComponent<Animator>();
+            _input = this.FindComponent<UnitInputComponent>();
+            _stats = this.FindComponent<UnitStatsComponent>();
+            _colliderTriggers = this.FindComponentsInChildren<ColliderTriggerComponent>();
 
             if (_input != null)
             {
@@ -38,8 +38,10 @@ namespace RpgGame.Units
 
         protected virtual void Update()
         {
-            if (!_playingAttackAnimation)
+            if (!_playingAttackAnimation) {
                 OnMove();
+                OnRotate();
+            }
         }
 
         private void OnDestroy()
@@ -51,6 +53,17 @@ namespace RpgGame.Units
             }
         }
 
+#if UNITY_EDITOR
+        private void OnValidate()
+        {
+            if (_targetPoint == null)
+            {
+                _targetPoint = this.FindComponentsInChildren<Transform>()
+                    .First(tr => tr.name == "B-neck");
+            }
+        }
+#endif
+
         #endregion
 
         private void OnMove()
@@ -61,8 +74,11 @@ namespace RpgGame.Units
             var moving = movement.x != 0 || movement.z != 0;
             _animator.SetBool("Moving", moving);
             if (moving)
-                transform.position += movement * _stats.MoveSpeed * Time.deltaTime;
+                transform.position += transform.TransformVector(movement) *
+                    _stats.MoveSpeed * Time.deltaTime;
         }
+
+        protected abstract void OnRotate();
 
         private void OnAttack(Weapon weapon)
         {
