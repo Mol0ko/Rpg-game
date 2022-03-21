@@ -39,7 +39,7 @@ namespace RpgGame.Units.Player
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""SwordAttack"",
+                    ""name"": ""MainWeaponAttack"",
                     ""type"": ""Button"",
                     ""id"": ""00ed8690-3ab4-4394-9f54-d97887d3fc2a"",
                     ""expectedControlType"": ""Button"",
@@ -48,7 +48,7 @@ namespace RpgGame.Units.Player
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""ShieldAttack"",
+                    ""name"": ""AdditionalWeaponAttack"",
                     ""type"": ""Button"",
                     ""id"": ""645d39cb-ed29-4b8e-b628-541541ba7e1c"",
                     ""expectedControlType"": ""Button"",
@@ -60,6 +60,24 @@ namespace RpgGame.Units.Player
                     ""name"": ""LockTarget"",
                     ""type"": ""Button"",
                     ""id"": ""458427a9-7a3f-4ed6-b85d-60377e819df5"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MeleeSet"",
+                    ""type"": ""Button"",
+                    ""id"": ""ca6a81f1-0054-4c39-972a-68e0c907d437"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RangeSet"",
+                    ""type"": ""Button"",
+                    ""id"": ""fb28a80e-fc63-4fe2-bd35-af65c22a1290"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -129,7 +147,7 @@ namespace RpgGame.Units.Player
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""SwordAttack"",
+                    ""action"": ""MainWeaponAttack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -140,7 +158,7 @@ namespace RpgGame.Units.Player
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""ShieldAttack"",
+                    ""action"": ""AdditionalWeaponAttack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -152,6 +170,28 @@ namespace RpgGame.Units.Player
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""LockTarget"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6decd3b1-a8ca-41ab-bdac-5169d17cb152"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MeleeSet"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0148ecfb-4c27-46ec-86b4-e9b835ca2385"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RangeSet"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -191,9 +231,11 @@ namespace RpgGame.Units.Player
             // Unit
             m_Unit = asset.FindActionMap("Unit", throwIfNotFound: true);
             m_Unit_Move = m_Unit.FindAction("Move", throwIfNotFound: true);
-            m_Unit_SwordAttack = m_Unit.FindAction("SwordAttack", throwIfNotFound: true);
-            m_Unit_ShieldAttack = m_Unit.FindAction("ShieldAttack", throwIfNotFound: true);
+            m_Unit_MainWeaponAttack = m_Unit.FindAction("MainWeaponAttack", throwIfNotFound: true);
+            m_Unit_AdditionalWeaponAttack = m_Unit.FindAction("AdditionalWeaponAttack", throwIfNotFound: true);
             m_Unit_LockTarget = m_Unit.FindAction("LockTarget", throwIfNotFound: true);
+            m_Unit_MeleeSet = m_Unit.FindAction("MeleeSet", throwIfNotFound: true);
+            m_Unit_RangeSet = m_Unit.FindAction("RangeSet", throwIfNotFound: true);
             // Camera
             m_Camera = asset.FindActionMap("Camera", throwIfNotFound: true);
             m_Camera_Delta = m_Camera.FindAction("Delta", throwIfNotFound: true);
@@ -257,17 +299,21 @@ namespace RpgGame.Units.Player
         private readonly InputActionMap m_Unit;
         private IUnitActions m_UnitActionsCallbackInterface;
         private readonly InputAction m_Unit_Move;
-        private readonly InputAction m_Unit_SwordAttack;
-        private readonly InputAction m_Unit_ShieldAttack;
+        private readonly InputAction m_Unit_MainWeaponAttack;
+        private readonly InputAction m_Unit_AdditionalWeaponAttack;
         private readonly InputAction m_Unit_LockTarget;
+        private readonly InputAction m_Unit_MeleeSet;
+        private readonly InputAction m_Unit_RangeSet;
         public struct UnitActions
         {
             private @PlayerControls m_Wrapper;
             public UnitActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
             public InputAction @Move => m_Wrapper.m_Unit_Move;
-            public InputAction @SwordAttack => m_Wrapper.m_Unit_SwordAttack;
-            public InputAction @ShieldAttack => m_Wrapper.m_Unit_ShieldAttack;
+            public InputAction @MainWeaponAttack => m_Wrapper.m_Unit_MainWeaponAttack;
+            public InputAction @AdditionalWeaponAttack => m_Wrapper.m_Unit_AdditionalWeaponAttack;
             public InputAction @LockTarget => m_Wrapper.m_Unit_LockTarget;
+            public InputAction @MeleeSet => m_Wrapper.m_Unit_MeleeSet;
+            public InputAction @RangeSet => m_Wrapper.m_Unit_RangeSet;
             public InputActionMap Get() { return m_Wrapper.m_Unit; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -280,15 +326,21 @@ namespace RpgGame.Units.Player
                     @Move.started -= m_Wrapper.m_UnitActionsCallbackInterface.OnMove;
                     @Move.performed -= m_Wrapper.m_UnitActionsCallbackInterface.OnMove;
                     @Move.canceled -= m_Wrapper.m_UnitActionsCallbackInterface.OnMove;
-                    @SwordAttack.started -= m_Wrapper.m_UnitActionsCallbackInterface.OnSwordAttack;
-                    @SwordAttack.performed -= m_Wrapper.m_UnitActionsCallbackInterface.OnSwordAttack;
-                    @SwordAttack.canceled -= m_Wrapper.m_UnitActionsCallbackInterface.OnSwordAttack;
-                    @ShieldAttack.started -= m_Wrapper.m_UnitActionsCallbackInterface.OnShieldAttack;
-                    @ShieldAttack.performed -= m_Wrapper.m_UnitActionsCallbackInterface.OnShieldAttack;
-                    @ShieldAttack.canceled -= m_Wrapper.m_UnitActionsCallbackInterface.OnShieldAttack;
+                    @MainWeaponAttack.started -= m_Wrapper.m_UnitActionsCallbackInterface.OnMainWeaponAttack;
+                    @MainWeaponAttack.performed -= m_Wrapper.m_UnitActionsCallbackInterface.OnMainWeaponAttack;
+                    @MainWeaponAttack.canceled -= m_Wrapper.m_UnitActionsCallbackInterface.OnMainWeaponAttack;
+                    @AdditionalWeaponAttack.started -= m_Wrapper.m_UnitActionsCallbackInterface.OnAdditionalWeaponAttack;
+                    @AdditionalWeaponAttack.performed -= m_Wrapper.m_UnitActionsCallbackInterface.OnAdditionalWeaponAttack;
+                    @AdditionalWeaponAttack.canceled -= m_Wrapper.m_UnitActionsCallbackInterface.OnAdditionalWeaponAttack;
                     @LockTarget.started -= m_Wrapper.m_UnitActionsCallbackInterface.OnLockTarget;
                     @LockTarget.performed -= m_Wrapper.m_UnitActionsCallbackInterface.OnLockTarget;
                     @LockTarget.canceled -= m_Wrapper.m_UnitActionsCallbackInterface.OnLockTarget;
+                    @MeleeSet.started -= m_Wrapper.m_UnitActionsCallbackInterface.OnMeleeSet;
+                    @MeleeSet.performed -= m_Wrapper.m_UnitActionsCallbackInterface.OnMeleeSet;
+                    @MeleeSet.canceled -= m_Wrapper.m_UnitActionsCallbackInterface.OnMeleeSet;
+                    @RangeSet.started -= m_Wrapper.m_UnitActionsCallbackInterface.OnRangeSet;
+                    @RangeSet.performed -= m_Wrapper.m_UnitActionsCallbackInterface.OnRangeSet;
+                    @RangeSet.canceled -= m_Wrapper.m_UnitActionsCallbackInterface.OnRangeSet;
                 }
                 m_Wrapper.m_UnitActionsCallbackInterface = instance;
                 if (instance != null)
@@ -296,15 +348,21 @@ namespace RpgGame.Units.Player
                     @Move.started += instance.OnMove;
                     @Move.performed += instance.OnMove;
                     @Move.canceled += instance.OnMove;
-                    @SwordAttack.started += instance.OnSwordAttack;
-                    @SwordAttack.performed += instance.OnSwordAttack;
-                    @SwordAttack.canceled += instance.OnSwordAttack;
-                    @ShieldAttack.started += instance.OnShieldAttack;
-                    @ShieldAttack.performed += instance.OnShieldAttack;
-                    @ShieldAttack.canceled += instance.OnShieldAttack;
+                    @MainWeaponAttack.started += instance.OnMainWeaponAttack;
+                    @MainWeaponAttack.performed += instance.OnMainWeaponAttack;
+                    @MainWeaponAttack.canceled += instance.OnMainWeaponAttack;
+                    @AdditionalWeaponAttack.started += instance.OnAdditionalWeaponAttack;
+                    @AdditionalWeaponAttack.performed += instance.OnAdditionalWeaponAttack;
+                    @AdditionalWeaponAttack.canceled += instance.OnAdditionalWeaponAttack;
                     @LockTarget.started += instance.OnLockTarget;
                     @LockTarget.performed += instance.OnLockTarget;
                     @LockTarget.canceled += instance.OnLockTarget;
+                    @MeleeSet.started += instance.OnMeleeSet;
+                    @MeleeSet.performed += instance.OnMeleeSet;
+                    @MeleeSet.canceled += instance.OnMeleeSet;
+                    @RangeSet.started += instance.OnRangeSet;
+                    @RangeSet.performed += instance.OnRangeSet;
+                    @RangeSet.canceled += instance.OnRangeSet;
                 }
             }
         }
@@ -345,9 +403,11 @@ namespace RpgGame.Units.Player
         public interface IUnitActions
         {
             void OnMove(InputAction.CallbackContext context);
-            void OnSwordAttack(InputAction.CallbackContext context);
-            void OnShieldAttack(InputAction.CallbackContext context);
+            void OnMainWeaponAttack(InputAction.CallbackContext context);
+            void OnAdditionalWeaponAttack(InputAction.CallbackContext context);
             void OnLockTarget(InputAction.CallbackContext context);
+            void OnMeleeSet(InputAction.CallbackContext context);
+            void OnRangeSet(InputAction.CallbackContext context);
         }
         public interface ICameraActions
         {

@@ -15,7 +15,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "SwordAttack",
+                    "name": "MainWeaponAttack",
                     "type": "Button",
                     "id": "00ed8690-3ab4-4394-9f54-d97887d3fc2a",
                     "expectedControlType": "Button",
@@ -24,7 +24,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "ShieldAttack",
+                    "name": "AdditionalWeaponAttack",
                     "type": "Button",
                     "id": "645d39cb-ed29-4b8e-b628-541541ba7e1c",
                     "expectedControlType": "Button",
@@ -36,6 +36,24 @@
                     "name": "LockTarget",
                     "type": "Button",
                     "id": "458427a9-7a3f-4ed6-b85d-60377e819df5",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "MeleeSet",
+                    "type": "Button",
+                    "id": "ca6a81f1-0054-4c39-972a-68e0c907d437",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "RangeSet",
+                    "type": "Button",
+                    "id": "fb28a80e-fc63-4fe2-bd35-af65c22a1290",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -105,7 +123,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "SwordAttack",
+                    "action": "MainWeaponAttack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -116,7 +134,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "ShieldAttack",
+                    "action": "AdditionalWeaponAttack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -128,6 +146,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "LockTarget",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6decd3b1-a8ca-41ab-bdac-5169d17cb152",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MeleeSet",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0148ecfb-4c27-46ec-86b4-e9b835ca2385",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RangeSet",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

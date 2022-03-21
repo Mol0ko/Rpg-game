@@ -1,3 +1,3 @@
 namespace RpgGame.Units {
-    public enum Weapon { Sword, Shield }
+    public enum Weapon { MainWeapon, AdditionalWeapon }
 }

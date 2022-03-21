@@ -11,8 +11,8 @@ namespace RpgGame.Units.Player
 
         private void Awake() {
             _controls = new PlayerControls();
-            _controls.Unit.SwordAttack.performed += OnSwordAttack;
-            _controls.Unit.ShieldAttack.performed += OnShieldAttack;
+            _controls.Unit.MainWeaponAttack.performed += OnMainWeaponAttack;
+            _controls.Unit.AdditionalWeaponAttack.performed += OnAdditionalWeaponAttack;
             _controls.Unit.LockTarget.performed += OnTargetLock;
         }
 
@@ -30,19 +30,19 @@ namespace RpgGame.Units.Player
             _controls.Unit.Disable();
         }
         private void OnDestroy() {
-            _controls.Unit.SwordAttack.performed -= OnSwordAttack;
-            _controls.Unit.ShieldAttack.performed -= OnShieldAttack;
+            _controls.Unit.MainWeaponAttack.performed -= OnMainWeaponAttack;
+            _controls.Unit.AdditionalWeaponAttack.performed -= OnAdditionalWeaponAttack;
             _controls.Unit.LockTarget.performed -= OnTargetLock;
             _controls.Dispose();
         }
 
         #endregion
 
-        private void OnSwordAttack(InputAction.CallbackContext obj) =>
-            CallOnAttackEvent(Weapon.Sword);
+        private void OnMainWeaponAttack(InputAction.CallbackContext obj) =>
+            CallOnAttackEvent(Weapon.MainWeapon);
 
-        private void OnShieldAttack(InputAction.CallbackContext obj) =>
-            CallOnAttackEvent(Weapon.Shield);
+        private void OnAdditionalWeaponAttack(InputAction.CallbackContext obj) =>
+            CallOnAttackEvent(Weapon.AdditionalWeapon);
 
         private void OnTargetLock(InputAction.CallbackContext obj) => 
             CallOnTargetEvent();
