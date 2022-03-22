@@ -6,6 +6,12 @@ namespace RpgGame.Units.Player
     {
         private CameraPoint _camera;
 
+        // Вооружен ли unit
+        private bool _armed;
+
+        [SerializeField]
+        private WeaponSet _weapon = WeaponSet.SwordAndShield;
+
         protected override void OnRotate()
         {
             transform.rotation = Quaternion

@@ -38,7 +38,8 @@ namespace RpgGame.Units
 
         protected virtual void Update()
         {
-            if (!_playingAttackAnimation) {
+            if (!_playingAttackAnimation)
+            {
                 OnMove();
                 OnRotate();
             }
@@ -54,12 +55,13 @@ namespace RpgGame.Units
         }
 
 #if UNITY_EDITOR
-        private void OnValidate()
+        [ContextMenu("UpdateInternalStates")]
+        private void UpdateInternalStates()
         {
             if (_targetPoint == null)
             {
                 _targetPoint = this.FindComponentsInChildren<Transform>()
-                    .First(tr => tr.name == "B-neck");
+                    .First(tr => tr.name == "Neck");
             }
         }
 #endif

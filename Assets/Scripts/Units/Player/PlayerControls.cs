@@ -176,7 +176,7 @@ namespace RpgGame.Units.Player
                 {
                     ""name"": """",
                     ""id"": ""6decd3b1-a8ca-41ab-bdac-5169d17cb152"",
-                    ""path"": """",
+                    ""path"": ""<Keyboard>/1"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -187,7 +187,7 @@ namespace RpgGame.Units.Player
                 {
                     ""name"": """",
                     ""id"": ""0148ecfb-4c27-46ec-86b4-e9b835ca2385"",
-                    ""path"": """",
+                    ""path"": ""<Keyboard>/2"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",

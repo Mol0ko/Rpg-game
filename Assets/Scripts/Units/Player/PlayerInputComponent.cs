@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace RpgGame.Units.Player
@@ -7,6 +8,9 @@ namespace RpgGame.Units.Player
     {
         private PlayerControls _controls;
 
+        public Action MeleeSetEventHandler;
+        public Action RangeSetEventHandler;
+
         #region Lifecycle
 
         private void Awake() {
@@ -14,6 +18,8 @@ namespace RpgGame.Units.Player
             _controls.Unit.MainWeaponAttack.performed += OnMainWeaponAttack;
             _controls.Unit.AdditionalWeaponAttack.performed += OnAdditionalWeaponAttack;
             _controls.Unit.LockTarget.performed += OnTargetLock;
+            _controls.Unit.MeleeSet.performed += OnMeleeSet;
+            _controls.Unit.RangeSet.performed += OnRangeSet;
         }
 
         void Update()
@@ -46,5 +52,11 @@ namespace RpgGame.Units.Player
 
         private void OnTargetLock(InputAction.CallbackContext obj) => 
             CallOnTargetEvent();
+
+        private void OnMeleeSet(InputAction.CallbackContext obj) => 
+            MeleeSetEventHandler?.Invoke();
+
+        private void OnRangeSet(InputAction.CallbackContext obj) =>
+            RangeSetEventHandler?.Invoke();
     }
 }
